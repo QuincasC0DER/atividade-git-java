@@ -18,31 +18,19 @@ jobs:
       - name: Build with Maven
         run: mvn clean package
       
-      # NOTIFICAÇÃO DE SUCESSO (via log)
-      - name:  ALERTA DE SUCESSO
+      - name: Notificação de SUCESSO (log)
         if: success()
         run: |
-          echo "=========================================="
-          echo " BUILD EXECUTADO COM SUCESSO! "
-          echo "=========================================="
+          echo " BUILD EXECUTADO COM SUCESSO!"
           echo " Repositório: ${{ github.repository }}"
           echo " Branch: ${{ github.ref_name }}"
-          echo " Commit: ${{ github.sha }}"
-          echo " Autor: ${{ github.actor }}"
           echo " Todos os testes passaram!"
-          echo "=========================================="
       
-      # NOTIFICAÇÃO DE FALHA (via log)
-      - name:  ALERTA DE FALHA
+      - name: Notificação de FALHA (log)
         if: failure()
         run: |
-          echo "=========================================="
-          echo " BUILD FALHOU! "
-          echo "=========================================="
+          echo " BUILD FALHOU!"
           echo " Repositório: ${{ github.repository }}"
           echo " Branch: ${{ github.ref_name }}"
-          echo " Commit: ${{ github.sha }}"
-          echo " Autor: ${{ github.actor }}"
           echo " Verifique os logs para mais detalhes!"
-          echo "=========================================="
           exit 1
