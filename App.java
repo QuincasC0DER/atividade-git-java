@@ -1,34 +1,55 @@
 package com.calculadora;
 
-import java.util.Scanner;
+import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.*;
 
-public class App {
-    public static void main(String[] args) {
-        Scanner scanner = new Scanner(System.in);
-        System.out.println("Calculadora Simples");
-        System.out.print("Digite o primeiro número: ");
-        double a = scanner.nextDouble();
-        System.out.print("Digite a operação (+, -, *, /): ");
-        char op = scanner.next().charAt(0);
-        System.out.print("Digite o segundo número: ");
-        double b = scanner.nextDouble();
+public class CalculadoraTest {
 
-        double resultado;
+    // Método auxiliar com a lógica da calculadora
+    private double calcular(double a, double b, char op) {
         switch (op) {
-            case '+': resultado = a + b; break;
-            case '-': resultado = a - b; break;
-            case '*': resultado = a * b; break;
+            case '+': return a + b;
+            case '-': return a - b;
+            case '*': return a * b;
             case '/': 
                 if (b == 0) {
-                    System.out.println("Erro: divisão por zero!");
-                    return;
+                    throw new ArithmeticException("Divisão por zero!");
                 }
-                resultado = a / b; 
-                break;
+                return a / b;
             default:
-                System.out.println("Operação inválida!");
-                return;
+                throw new IllegalArgumentException("Operação inválida!");
         }
-        System.out.println("Resultado: " + resultado);
+    }
+
+    @Test
+    public void testSoma() {
+        // Teste 1: Verifica soma
+        assertEquals(8.0, calcular(5, 3, '+'), 0.001);
+    }
+    
+    @Test
+    public void testSubtracao() {
+        // Teste 2: Verifica subtração
+        assertEquals(6.0, calcular(10, 4, '-'), 0.001);
+    }
+    
+    @Test
+    public void testMultiplicacao() {
+        // Teste 3: Verifica multiplicação
+        assertEquals(42.0, calcular(7, 6, '*'), 0.001);
+    }
+    
+    @Test
+    public void testDivisao() {
+        // Teste 4: Verifica divisão
+        assertEquals(5.0, calcular(15, 3, '/'), 0.001);
+    }
+    
+    @Test
+    public void testDivisaoPorZero() {
+        // Teste 5: Verifica divisão por zero
+        assertThrows(ArithmeticException.class, () -> {
+            calcular(10, 0, '/');
+        });
     }
 }
