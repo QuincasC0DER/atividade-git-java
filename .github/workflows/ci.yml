@@ -18,12 +18,50 @@ jobs:
       - name: Build with Maven
         run: mvn clean package
       
-      - name: Enviar alerta de sucesso
+      # NOTIFICAÇÃO DE SUCESSO
+      - name: Enviar notificação de sucesso
         if: success()
-        run: |
-          echo " Build executado com sucesso!"
-          
-      - name: Enviar alerta de falha
+        uses: dawidd6/action-send-mail@v3
+        with:
+          server_address: smtp.gmail.com
+          server_port: 465
+          username: ${{secrets.MAIL_USERNAME}}
+          password: ${{secrets.MAIL_PASSWORD}}
+          subject:  Build bem-sucedido - ${{ github.repository }}
+          to: lucasqsuzin@gmail.com
+          from: GitHub Actions
+          body: |
+             O build do projeto foi executado com SUCESSO!
+            
+             Repositório: ${{ github.repository }}
+             Branch: ${{ github.ref_name }}
+             Commit: ${{ github.sha }}
+             Autor: ${{ github.actor }}
+             Data: ${{ github.event.head_commit.timestamp }}
+            
+             Todos os testes passaram!
+            
+            
+      
+      # NOTIFICAÇÃO DE FALHA
+      - name: Enviar notificação de falha
         if: failure()
-        run: |
-          echo " Build falhou!"
+        uses: dawidd6/action-send-mail@v3
+        with:
+          server_address: smtp.gmail.com
+          server_port: 465
+          username: ${{secrets.MAIL_USERNAME}}
+          password: ${{secrets.MAIL_PASSWORD}}
+          subject:  Build falhou - ${{ github.repository }}
+          to: lucasqsuzin@gmail.com
+          from: GitHub Actions
+          body: |
+             O build do projeto FALHOU!
+            
+             Repositório: ${{ github.repository }}
+             Branch: ${{ github.ref_name }}
+             Commit: ${{ github.sha }}
+             Autor: ${{ github.actor }}
+             Data: ${{ github.event.head_commit.timestamp }}
+            
+          
