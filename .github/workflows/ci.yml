@@ -18,50 +18,31 @@ jobs:
       - name: Build with Maven
         run: mvn clean package
       
-      # NOTIFICAÇÃO DE SUCESSO
-      - name: Enviar notificação de sucesso
+      # NOTIFICAÇÃO DE SUCESSO (via log)
+      - name:  ALERTA DE SUCESSO
         if: success()
-        uses: dawidd6/action-send-mail@v3
-        with:
-          server_address: smtp.gmail.com
-          server_port: 465
-          username: ${{secrets.MAIL_USERNAME}}
-          password: ${{secrets.MAIL_PASSWORD}}
-          subject:  Build bem-sucedido - ${{ github.repository }}
-          to: lucasqsuzin@gmail.com
-          from: GitHub Actions
-          body: |
-             O build do projeto foi executado com SUCESSO!
-            
-             Repositório: ${{ github.repository }}
-             Branch: ${{ github.ref_name }}
-             Commit: ${{ github.sha }}
-             Autor: ${{ github.actor }}
-             Data: ${{ github.event.head_commit.timestamp }}
-            
-             Todos os testes passaram!
-            
-            
+        run: |
+          echo "=========================================="
+          echo " BUILD EXECUTADO COM SUCESSO! "
+          echo "=========================================="
+          echo " Repositório: ${{ github.repository }}"
+          echo " Branch: ${{ github.ref_name }}"
+          echo " Commit: ${{ github.sha }}"
+          echo " Autor: ${{ github.actor }}"
+          echo " Todos os testes passaram!"
+          echo "=========================================="
       
-      # NOTIFICAÇÃO DE FALHA
-      - name: Enviar notificação de falha
+      # NOTIFICAÇÃO DE FALHA (via log)
+      - name:  ALERTA DE FALHA
         if: failure()
-        uses: dawidd6/action-send-mail@v3
-        with:
-          server_address: smtp.gmail.com
-          server_port: 465
-          username: ${{secrets.MAIL_USERNAME}}
-          password: ${{secrets.MAIL_PASSWORD}}
-          subject:  Build falhou - ${{ github.repository }}
-          to: lucasqsuzin@gmail.com
-          from: GitHub Actions
-          body: |
-             O build do projeto FALHOU!
-            
-             Repositório: ${{ github.repository }}
-             Branch: ${{ github.ref_name }}
-             Commit: ${{ github.sha }}
-             Autor: ${{ github.actor }}
-             Data: ${{ github.event.head_commit.timestamp }}
-            
-          
+        run: |
+          echo "=========================================="
+          echo " BUILD FALHOU! "
+          echo "=========================================="
+          echo " Repositório: ${{ github.repository }}"
+          echo " Branch: ${{ github.ref_name }}"
+          echo " Commit: ${{ github.sha }}"
+          echo " Autor: ${{ github.actor }}"
+          echo " Verifique os logs para mais detalhes!"
+          echo "=========================================="
+          exit 1
