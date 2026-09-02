@@ -1,0 +1,44 @@
+package com.calculadora;
+
+import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.*;
+
+public class CalculadoraTest {
+
+    private double calcular(double a, double b, char op) {
+        switch (op) {
+            case '+': return a + b;
+            case '-': return a - b;
+            case '*': return a * b;
+            case '/': 
+                if (b == 0) throw new ArithmeticException("Divisão por zero!");
+                return a / b;
+            default: throw new IllegalArgumentException("Operação inválida!");
+        }
+    }
+
+    @Test
+    public void testSoma() {
+        assertEquals(8.0, calcular(5, 3, '+'), 0.001);
+    }
+    
+    @Test
+    public void testSubtracao() {
+        assertEquals(6.0, calcular(10, 4, '-'), 0.001);
+    }
+    
+    @Test
+    public void testMultiplicacao() {
+        assertEquals(42.0, calcular(7, 6, '*'), 0.001);
+    }
+    
+    @Test
+    public void testDivisao() {
+        assertEquals(5.0, calcular(15, 3, '/'), 0.001);
+    }
+    
+    @Test
+    public void testDivisaoPorZero() {
+        assertThrows(ArithmeticException.class, () -> calcular(10, 0, '/'));
+    }
+}
